@@ -1,9 +1,9 @@
 # 競馬予測システム 開発チェックリスト
 
 ## フェーズ1: 基盤構築
-- [ ] リポジトリの初期化とGitHub連携
-- [ ] CI/CD (GitHub Actions) の設定
-- [ ] ディレクトリ構造の作成 (`data/`, `scripts/`, etc.)
+- [x] リポジトリの初期化とGitHub連携
+- [x] CI/CD (GitHub Actions) の設定
+- [x] ディレクトリ構造の作成 (`data/`, `scripts/`, etc.)
 
 ## フェーズ2: データパイプライン
 - [ ] ① データ取得: スクレイピングの実装 (`scraping.py`)
