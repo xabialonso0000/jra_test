@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: keiba_prediction_app
+    volumes:
+      - .:/app
+      - app_data:/app/data # データ永続化用
+      - app_models:/app/models # モデル永続化用
+    ports:
+      - "8000:8000" # 必要に応じてAPIなどを公開する場合
+    depends_on:
+      - db
+    environment:
+      # 環境変数が必要な場合はここに記述
+      DATABASE_URL: postgresql://user:password@db:5432/keiba_db
+    command: /bin/bash -c "while true; do sleep 3600; done" # コンテナを起動し続けるためのダミーコマンド
+
+  db:
+    image: postgres:13
+    container_name: keiba_db
+    environment:
+      POSTGRES_DB: keiba_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  app_data:
+  app_models:
+  db_data:
