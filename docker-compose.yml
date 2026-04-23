@@ -1,10 +1,9 @@
-version: '3.8'
-
 services:
   app:
     build:
       context: .
       dockerfile: Dockerfile
+    image: keiba-app:latest
     container_name: keiba_prediction_app
     volumes:
       - .:/app
@@ -17,7 +16,6 @@ services:
     environment:
       # 環境変数が必要な場合はここに記述
       DATABASE_URL: postgresql://user:password@db:5432/keiba_db
-    command: /bin/bash -c "while true; do sleep 3600; done" # コンテナを起動し続けるためのダミーコマンド
 
   db:
     image: postgres:13

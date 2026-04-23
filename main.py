@@ -1,10 +1,11 @@
 import pandas as pd
+import numpy as np
 import os
-from scripts.scraping import YahooKeibaScraper
-from scripts.preprocess import clean_data
-from scripts.feature_engineering import create_features
-from scripts.train import train_model
-from scripts.predict import predict_upcoming_race
+from scraping import YahooKeibaScraper
+from preprocess import clean_data
+from feature_engineering import create_features
+from train import train_model
+from predict import predict_upcoming_race
 import datetime
 
 def run_prediction_pipeline():
@@ -24,7 +25,8 @@ def run_prediction_pipeline():
         'odds': [2.5, 5.0, 1.8, 10.0, 3.0, 3.2, 2.0, 6.0, 12.0, 4.0],
         'distance': ['1600m', '1600m', '1600m', '1600m', '1600m', '1800m', '1800m', '1800m', '1800m', '1800m']
     })
-    model, trained_features = train_model(dummy_train_data)
+    # 学習用ダミーデータも前処理（数値化・欠損値処理）を行ってから学習に渡す
+    model, trained_features = train_model(clean_data(dummy_train_data))
     print("モデル学習完了。")
 
     # 2. 今週の土曜日のレースをシミュレート
@@ -56,6 +58,7 @@ def run_prediction_pipeline():
         'horse_id': [101, 102, 103],
         'race_id': [first_race_id] * 3, # 取得した最初のレースIDを使用
         'weight': [490, 510, 485],
+        'rank': [np.nan] * 3, # 特徴量生成スクリプトが参照するため、空の着順カラムを用意
         'odds': [3.5, 2.0, 7.0],
         'distance': ['1600m', '1600m', '1600m'],
         # feature_engineering.py で生成される可能性のある特徴量もダミーで含める
